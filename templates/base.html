@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}İzin Takip{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    {% if current_user.is_authenticated %}
+    <nav class="bg-white shadow p-3">
+      <div class="container mx-auto flex justify-between">
+        <div class="font-semibold">İzin Takip Sistemi</div>
+        <div class="flex items-center space-x-4">
+          <span class="text-sm text-gray-600">Hoş geldin, {{ current_user.username }}</span>
+          <a href="{{ url_for('index') }}" class="text-sm text-blue-600 hover:text-blue-800">Ana Sayfa</a>
+          {% if current_user.can_access_admin() %}
+          <div class="relative group">
+            <button class="text-sm text-blue-600 hover:text-blue-800">Admin ▼</button>
+            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden group-hover:block z-10">
+              <a href="{{ url_for('admin') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Panel</a>
+              <a href="{{ url_for('admin_users') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Kullanıcı Yönetimi</a>
+              <a href="{{ url_for('admin_leave_balances') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">İzin Hakları</a>
+            </div>
+          </div>
+          {% endif %}
+          <a href="{{ url_for('logout') }}" class="text-sm text-red-600 hover:text-red-800">Çıkış</a>
+        </div>
+      </div>
+    </nav>
+    {% endif %}
+    <main class="container mx-auto mt-6">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
